@@ -10,6 +10,7 @@ setup(
     description='CPD reporting for CPEng',
     long_description=open('README.md').read(),
     install_requires=[
-        'pandas >= 0.25.3',       
+        'pandas >= 0.25.3',
+        'xlrd >= 1.2.0',
     ],
 )
