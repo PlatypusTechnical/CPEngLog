@@ -19,5 +19,5 @@ def excel(ea_file):
     new_data['Start date'] = pd.to_datetime(new_data['Start date'])
     new_data['End date'] = pd.to_datetime(new_data['End date'])
     new_data['Type'] = new_data['Type'].map(lambda x: x.lstrip('Type '))
-    new_data.reset_index(drop=True, inplace=True) 
+    new_data.reset_index(drop=True, inplace=True)
     return new_data 
