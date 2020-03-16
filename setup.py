@@ -5,7 +5,7 @@ setup(
     version='0.1dev',
     author='Lee Walsh',
     packages=['cpenglog',],
-    scripts=['bin/report_cpd.py'],
+    scripts=['bin/runlog.py'],
     license='LICENSE',
     description='CPD reporting for CPEng',
     long_description=open('README.md').read(),
