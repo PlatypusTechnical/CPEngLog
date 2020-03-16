@@ -80,7 +80,7 @@ class MainMenu(tk.Menu):
         Arguments:
             Nil.
         """
-        print('Closing this databse')
+#        print('Closing this databse')
         if self.master.dbConnection:
             self.master.dbConnection.close()
 
