@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog
+from tkinter import messagebox
 
 from cpenglog import dbSQLite
 
@@ -56,14 +57,17 @@ class MainMenu(tk.Menu):
         Arguments:
             Nil.
         """
+        if self.master.dbConnection != None:
+            self.closeDatabase()
         newDBpath = tk.filedialog.asksaveasfilename()
-        if newDBpath[-4:] != ".cpd":
-            newDBpath = newDBpath + ".cpd"
-#        print('Creating a new database: ', newDBpath)
-        newConnection = dbSQLite.createNewSQLite(newDBpath)
-        if newConnection:
-            self.master.openDBpath = newDBpath
-            self.master.dbConnection = newConnection
+        if len(newDBpath) > 0:
+            if newDBpath[-4:] != ".cpd":
+                newDBpath = newDBpath + ".cpd"
+            print('Creating a new database: ', newDBpath, len(newDBpath))
+            newConnection = dbSQLite.connectToSQLite(newDBpath)
+            if newConnection:
+                self.master.openDBpath = newDBpath
+                self.master.dbConnection = newConnection
 
     def openDatabase(self):
         """Called by the 'Open' item in the 'File' menu and manages the process of loading and exisitng database into the application.  Does not itself do any work, but calls functions from other modules.
@@ -71,8 +75,20 @@ class MainMenu(tk.Menu):
         Arguments:
             Nil.
         """
-        self.master.openDBpath = tk.filedialog.askopenfilename()
-        print('Opening:', self.master.openDBpath)
+        if self.master.dbConnection != None:
+            self.closeDatabase()
+        openDBpath = tk.filedialog.askopenfilename()
+        if len(openDBpath) > 0:
+#            if openDBpath[-4:] != ".cpd":
+#                openDBpath = openDBpath + ".cpd"
+            print('Opening:', openDBpath)
+            newConnection = dbSQLite.connectToSQLite(openDBpath)
+            if newConnection:
+                self.master.openDBpath = openDBpath
+                self.master.dbConnection = newConnection
+#        self.master.openDBpath = tk.filedialog.askopenfilename()
+#        print('Opening:', self.master.openDBpath)
+
 
     def closeDatabase(self):
         """Called by the 'Close' item in the 'File' menu and manages the process of closing the database that is currently open.  Does not itself do any work, but calls functions from other modules.
@@ -94,5 +110,9 @@ class MainMenu(tk.Menu):
             Nil.
         """
         print('Importing data')
+        if self.master.dbConnection == None:
+            print('No DB available')
+            tk.messagebox.showerror("Error: No database connection", "You need to be connected to a database to import data.\n\nPlease open an exisitng database or create a new one, then try to import again.")
+
 
 Application().mainloop()

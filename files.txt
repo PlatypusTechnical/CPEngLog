@@ -1,0 +1,8 @@
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\dbSQLite.py
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\read_ea.py
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\__init__.py
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\__pycache__\dbSQLite.cpython-38.pyc
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\__pycache__\read_ea.cpython-38.pyc
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\cpenglog\__pycache__\__init__.cpython-38.pyc
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Scripts\runlog.py
+C:\Users\LeeWalsh\AppData\Local\Programs\Python\Python38-32\Lib\site-packages\CPEngLog-0.1dev-py3.8.egg-info

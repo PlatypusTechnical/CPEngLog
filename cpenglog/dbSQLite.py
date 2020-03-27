@@ -1,11 +1,11 @@
 import sqlite3
 from sqlite3 import Error
 
-def createNewSQLite(newDBPath):
-    print('Creating a new SQLite database')
+def connectToSQLite(DBPath):
+    print('Connecting to an SQLite database')
     connection = None
     try:
-        connection = sqlite3.connect(newDBPath)
+        connection = sqlite3.connect(DBPath)
     except Error as e:
         print(e)
         return None
