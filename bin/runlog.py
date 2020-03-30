@@ -68,6 +68,7 @@ class MainMenu(tk.Menu):
             if newConnection:
                 self.master.openDBpath = newDBpath
                 self.master.dbConnection = newConnection
+                dbSQLite.setupNewDB(self.master.dbConnection)
 
     def openDatabase(self):
         """Called by the 'Open' item in the 'File' menu and manages the process of loading and exisitng database into the application.  Does not itself do any work, but calls functions from other modules.
