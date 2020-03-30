@@ -48,6 +48,7 @@ class MainMenu(tk.Menu):
         fileMenu.add_command(label='Close', command=self.closeDatabase)
         fileMenu.add_separator()
         fileMenu.add_command(label='Import', command=self.importData)
+        fileMenu.add_command(label='Export', command=self.exportData)
         fileMenu.add_separator()
         fileMenu.add_command(label='Exit', command=self.quit)
 
@@ -68,7 +69,7 @@ class MainMenu(tk.Menu):
             if newConnection:
                 self.master.openDBpath = newDBpath
                 self.master.dbConnection = newConnection
-                dbSQLite.setupNewDB(self.master.dbConnection)
+                dbSQLite.initNewDB(self.master.dbConnection)
 
     def openDatabase(self):
         """Called by the 'Open' item in the 'File' menu and manages the process of loading and exisitng database into the application.  Does not itself do any work, but calls functions from other modules.
@@ -78,18 +79,18 @@ class MainMenu(tk.Menu):
         """
         if self.master.dbConnection != None:
             self.closeDatabase()
-        openDBpath = tk.filedialog.askopenfilename()
+        openDBpath = tk.filedialog.askopenfilename(filetypes=[('CPEngLogs', '.cpd')])
         if len(openDBpath) > 0:
-#            if openDBpath[-4:] != ".cpd":
-#                openDBpath = openDBpath + ".cpd"
             print('Opening:', openDBpath)
             newConnection = dbSQLite.connectToSQLite(openDBpath)
             if newConnection:
-                self.master.openDBpath = openDBpath
-                self.master.dbConnection = newConnection
-#        self.master.openDBpath = tk.filedialog.askopenfilename()
-#        print('Opening:', self.master.openDBpath)
-
+                if dbSQLite.dbIsCompatible(newConnection):
+                    self.master.openDBpath = openDBpath
+                    self.master.dbConnection = newConnection
+                elif dbSQLite.dbIsMigratable(newConnection):
+                    tk.messagebox.showerror("Error: Database requires migration", "This CPEngLog database was created with an older version of CPEngLog and requires migration.\n\nPlease migrate it using Migrate in the File menu, and then Import it.")
+                else:
+                    tk.messagebox.showerror("Error: Database is not compatible", "This CPEngLog database was created with an older version of CPEngLog and is too old to migrate.\n\nPlease open it in an older version of CPEngLog, Export the data and then use the current version of CPEngLog to Import that data into a new database.")
 
     def closeDatabase(self):
         """Called by the 'Close' item in the 'File' menu and manages the process of closing the database that is currently open.  Does not itself do any work, but calls functions from other modules.
@@ -97,7 +98,6 @@ class MainMenu(tk.Menu):
         Arguments:
             Nil.
         """
-#        print('Closing this databse')
         if self.master.dbConnection:
             self.master.dbConnection.close()
 
@@ -109,11 +109,33 @@ class MainMenu(tk.Menu):
      
         Arguments:
             Nil.
+            
+        Returns:
+            Nil
         """
         print('Importing data')
         if self.master.dbConnection == None:
             print('No DB available')
             tk.messagebox.showerror("Error: No database connection", "You need to be connected to a database to import data.\n\nPlease open an exisitng database or create a new one, then try to import again.")
+            return
+        importDBpath = tk.filedialog.askopenfilename(filetypes=[('Excel files','.xlsx .xls')])
+        if dbSQLite.insertEAData(importDBpath) == False:
+            tk.messagebox.showerror("Error: The file could not be imported", "Please check that the file is in a format that is compatible for import.")
+        
 
+    def exportData(self):
+        """Called by the 'Xmport' item in the 'File' menu and manages the process of exporing data into a .csv file.
+     
+        Arguments:
+            Nil.
+
+        Returns:
+            Nil.
+        """
+        if self.master.dbConnection == None:
+            print('No DB available')
+            tk.messagebox.showerror("Error: No database connection", "You need to be connected to a database to export data.\n\nPlease open an exisitng database and then try to export again.")
+            return
+        tk.messagebox.showerror("Sorry!", "This feature is not yet implemented.")
 
 Application().mainloop()
